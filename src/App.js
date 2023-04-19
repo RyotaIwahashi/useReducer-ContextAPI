@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// reduxのreducerと同じ感じに定義する
+// action.payload に任意のデータを含めることが可能
+const counterReducer = (state, action) => {
+  switch (action.type) {
+    case "INC":
+      return state + 1
+    case "DEC":
+      return state - 1
+    case "ZERO":
+      return 0
+    default:
+        return state
+  }
 }
 
-export default App;
+const App = () => {
+  // useReducerには、状態変更処理のreducerと、状態の初期値を定義する。
+  // 現在の状態を参照できる変数とdispatch関数を返す。
+  const [counter, counterDispatch] = useReducer(counterReducer, 0)
+
+  return (
+    <>
+      <div>{counter}</div>
+      <div>
+        <button onClick={() => counterDispatch({ type: "INC" })}>+</button>
+        <button onClick={() => counterDispatch({ type: "DEC" })}>-</button>
+        <button onClick={() => counterDispatch({ type: "ZERO" })}>0</button>
+      </div>
+    </>
+  )
+}
+
+export default App
